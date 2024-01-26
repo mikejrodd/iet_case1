@@ -105,7 +105,7 @@ def main():
     sellers_data['Cost_to_Sell'] = pd.to_numeric(sellers_data['Cost_to_Sell'])
 
     # Streamlit layout changes
-    col1, col2 = st.beta_columns([2, 1])
+    col1, col2 = st.columns([2, 1])  # Use st.columns instead of st.beta_columns
 
     with col1:
         st.title('Market Demand and Supply Curves')
