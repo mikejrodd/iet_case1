@@ -27,7 +27,7 @@ def find_elasticity_equals_neg_one_point(z_buyers, q):
 
     return elasticity(q)
 
-def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, show_supply_curve_1, show_supply_curve_2, show_equilibrium_data):
+def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, show_supply_curve_1, show_supply_curve_2, show_equilibrium_data, show_max_profit_area):
     plt.figure(figsize=(12, 6))
 
     total_quantity_supplied = sellers_data['tons_to_sell'].sum()
@@ -75,8 +75,10 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
     max_profit_quantity, max_profit = calculate_profit_area(z_buyers, mc_price, total_quantity_supplied)
     price_to_maximize_profit = p_buyers(max_profit_quantity)
     elasticity_at_max_profit = find_elasticity_equals_neg_one_point(z_buyers, max_profit_quantity)
-    plt.fill_between([0, max_profit_quantity], mc_price, p_buyers(max_profit_quantity), color='green', alpha=0.3, label='Max Profit Area')
-    plt.plot(max_profit_quantity, price_to_maximize_profit, 'gs', label='Max Profit Point')
+    
+    if show_max_profit_area:
+        plt.fill_between([0, max_profit_quantity], mc_price, p_buyers(max_profit_quantity), color='green', alpha=0.3, label='Max Profit Area')
+        plt.plot(max_profit_quantity, price_to_maximize_profit, 'gs', label='Max Profit Point')
 
     plt.title('Market Demand and Supply Curves')
     plt.xlabel('Quantity')
@@ -107,10 +109,11 @@ def main():
         show_supply_curve_1 = st.checkbox('Show Supply Curve 1 (Original Best Fit)', value=True)
         show_supply_curve_2 = st.checkbox('Show Supply Curve 2 (Price 136 to 401)', value=True)
         show_equilibrium_data = st.checkbox('Show Equilibrium Data', value=True)
+        show_max_profit_area = st.checkbox('Show Max Profit Area', value=True)
 
         fig, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit = plot_data(
             buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, 
-            show_supply_curve_1, show_supply_curve_2, show_equilibrium_data)
+            show_supply_curve_1, show_supply_curve_2, show_equilibrium_data, show_max_profit_area)
         st.pyplot(fig)
 
         if show_equilibrium_data:
