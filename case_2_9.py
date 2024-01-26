@@ -84,6 +84,7 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
     plt.xlabel('Quantity')
     plt.ylabel('Price (USD)')
     plt.legend(loc='upper right')
+
     return plt, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit
 
 def main():
@@ -103,25 +104,32 @@ def main():
     sellers_data['tons_to_sell'] = pd.to_numeric(sellers_data['tons_to_sell'])
     sellers_data['Cost_to_Sell'] = pd.to_numeric(sellers_data['Cost_to_Sell'])
 
-    show_buyer_data = st.checkbox('Show Buyer Data', value=True)
-    show_seller_data = st.checkbox('Show Seller Data', value=True)
-    show_marginal_cost_line = st.checkbox('Show Marginal Cost Line ($200)', value=False)
-    show_supply_curve_1 = st.checkbox('Show Supply Curve 1', value=True)
-    show_supply_curve_2 = st.checkbox('Show Supply Curve 2', value=False)
-    show_equilibrium_data = st.checkbox('Show Equilibrium Data', value=False)
-    show_max_profit_area = st.checkbox('Show Max Profit Area', value=False)
+    # Streamlit layout changes
+    col1, col2 = st.beta_columns([2, 1])
 
-    fig, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit = plot_data(
-        buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, 
-        show_supply_curve_1, show_supply_curve_2, show_equilibrium_data, show_max_profit_area)
-    st.pyplot(fig)
+    with col1:
+        st.title('Market Demand and Supply Curves')
+        fig, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit = plot_data(
+            buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, 
+            show_supply_curve_1, show_supply_curve_2, show_equilibrium_data, show_max_profit_area)
+        st.pyplot(fig)
 
-    if show_equilibrium_data:
-        st.write(f"Equilibrium Price: {equilibrium_price:.2f} USD")
-        st.write(f"Equilibrium Quantity: {equilibrium_quantity:.2f} units")
-    st.write(f"Max Profit Available: {max_profit:.2f} USD")
-    st.write(f"Price to Maximize Profit: {price_to_maximize_profit:.2f} USD")
-    st.write(f"Elasticity at Max Profit Quantity: {elasticity_at_max_profit:.2f}")
+        if show_equilibrium_data:
+            st.write(f"Equilibrium Price: {equilibrium_price:.2f} USD")
+            st.write(f"Equilibrium Quantity: {equilibrium_quantity:.2f} units")
+        st.write(f"Max Profit Available: {max_profit:.2f} USD")
+        st.write(f"Price to Maximize Profit: {price_to_maximize_profit:.2f} USD")
+        st.write(f"Elasticity at Max Profit Quantity: {elasticity_at_max_profit:.2f}")
+
+    with col2:
+        st.write("Options:")
+        show_buyer_data = st.checkbox('Show Buyer Data', value=True)
+        show_seller_data = st.checkbox('Show Seller Data', value=True)
+        show_marginal_cost_line = st.checkbox('Show Marginal Cost Line ($200)', value=False)
+        show_supply_curve_1 = st.checkbox('Show Supply Curve 1', value=True)
+        show_supply_curve_2 = st.checkbox('Show Supply Curve 2', value=False)
+        show_equilibrium_data = st.checkbox('Show Equilibrium Data', value=False)
+        show_max_profit_area = st.checkbox('Show Max Profit Area', value=False)
 
 if __name__ == "__main__":
     main()
