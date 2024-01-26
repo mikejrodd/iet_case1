@@ -105,11 +105,11 @@ def main():
 
         show_buyer_data = st.checkbox('Show Buyer Data', value=True)
         show_seller_data = st.checkbox('Show Seller Data', value=True)
-        show_marginal_cost_line = st.checkbox('Show Marginal Cost Line (Price = 200)', value=True)
-        show_supply_curve_1 = st.checkbox('Show Supply Curve 1 (Original Best Fit)', value=True)
-        show_supply_curve_2 = st.checkbox('Show Supply Curve 2 (Price 136 to 401)', value=True)
-        show_equilibrium_data = st.checkbox('Show Equilibrium Data', value=True)
-        show_max_profit_area = st.checkbox('Show Max Profit Area', value=True)
+        show_marginal_cost_line = st.checkbox('Show Marginal Cost Line ($200)', value=False)
+        show_supply_curve_1 = st.checkbox('Show Supply Curve 1', value=True)
+        show_supply_curve_2 = st.checkbox('Show Supply Curve 2', value=False)
+        show_equilibrium_data = st.checkbox('Show Equilibrium Data', value=False)
+        show_max_profit_area = st.checkbox('Show Max Profit Area', value=False)
 
         fig, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit = plot_data(
             buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, 
