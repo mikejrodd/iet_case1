@@ -87,7 +87,7 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
     return plt, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit
 
 def main():
-    st.title('Market Analysis - Demand and Supply')
+    st.title('Case 2: Corn Demand and Supply')
 
     default_file_path = 'https://raw.githubusercontent.com/mikejrodd/iet_case1/main/case_2.xlsx'
     file_path = st.text_input('Enter the path of your Excel file:', default_file_path)
