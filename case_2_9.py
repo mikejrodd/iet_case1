@@ -87,12 +87,14 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
     return plt, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit
 
 def main():
-    st.title('Case 2: Corn Demand and Supply')
+    st.title('Market Analysis - Demand and Supply')
 
     default_file_path = 'https://raw.githubusercontent.com/mikejrodd/iet_case1/main/case_2.xlsx'
-    #file_path = st.text_input('Enter the path of your Excel file:', default_file_path)
 
-    #if file_path:
+    # Removed the st.text_input for file path
+    # file_path = st.text_input('Enter the path of your Excel file:', default_file_path)
+
+    # Removed the if file_path: condition
     data_sheet = pd.read_excel(default_file_path, sheet_name='data')
     buyers_data = data_sheet[['BUYERS', 'Unnamed: 1']].iloc[1:]
     buyers_data.columns = ['Buyer', 'Willingness_to_Pay']
@@ -103,25 +105,34 @@ def main():
     sellers_data['tons_to_sell'] = pd.to_numeric(sellers_data['tons_to_sell'])
     sellers_data['Cost_to_Sell'] = pd.to_numeric(sellers_data['Cost_to_Sell'])
 
-    show_buyer_data = st.checkbox('Show Buyer Data', value=True)
-    show_seller_data = st.checkbox('Show Seller Data', value=True)
-    show_marginal_cost_line = st.checkbox('Show Marginal Cost Line ($200)', value=False)
-    show_supply_curve_1 = st.checkbox('Show Supply Curve 1', value=True)
-    show_supply_curve_2 = st.checkbox('Show Supply Curve 2', value=False)
-    show_equilibrium_data = st.checkbox('Show Equilibrium Data', value=False)
-    show_max_profit_area = st.checkbox('Show Max Profit Area', value=False)
+    # Create a container for the checkboxes and values side by side
+    checkbox_col, values_col = st.beta_columns([1, 1])
 
-    fig, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit = plot_data(
-        buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, 
-        show_supply_curve_1, show_supply_curve_2, show_equilibrium_data, show_max_profit_area)
-    st.pyplot(fig)
+    # Move the title and plot to the top
+    with st.beta_container():
+        fig, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit = plot_data(
+            buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line,
+            show_supply_curve_1, show_supply_curve_2, show_equilibrium_data, show_max_profit_area)
+        st.pyplot(fig)
 
-    if show_equilibrium_data:
-        st.write(f"Equilibrium Price: {equilibrium_price:.2f} USD")
-        st.write(f"Equilibrium Quantity: {equilibrium_quantity:.2f} units")
-    st.write(f"Max Profit Available: {max_profit:.2f} USD")
-    st.write(f"Price to Maximize Profit: {price_to_maximize_profit:.2f} USD")
-    st.write(f"Elasticity at Max Profit Quantity: {elasticity_at_max_profit:.2f}")
+    # Checkboxes on the left
+    with checkbox_col:
+        show_buyer_data = st.checkbox('Show Buyer Data', value=False)  # Initially unchecked
+        show_seller_data = st.checkbox('Show Seller Data', value=False)  # Initially unchecked
+        show_marginal_cost_line = st.checkbox('Show Marginal Cost Line (Price = 200)', value=True)
+        show_supply_curve_1 = st.checkbox('Show Supply Curve 1 (Original Best Fit)', value=True)
+        show_supply_curve_2 = st.checkbox('Show Supply Curve 2 (Price 136 to 401)', value=True)
+        show_equilibrium_data = st.checkbox('Show Equilibrium Data', value=False)  # Initially unchecked
+        show_max_profit_area = st.checkbox('Show Max Profit Area', value=True)
+
+    # Printed values on the right
+    with values_col:
+        if show_equilibrium_data:
+            st.write(f"Equilibrium Price: {equilibrium_price:.2f} USD")
+            st.write(f"Equilibrium Quantity: {equilibrium_quantity:.2f} units")
+        st.write(f"Max Profit Available: {max_profit:.2f} USD")
+        st.write(f"Price to Maximize Profit: {price_to_maximize_profit:.2f} USD")
+        st.write(f"Elasticity at Max Profit Quantity: {elasticity_at_max_profit:.2f}")
 
 if __name__ == "__main__":
     main()
