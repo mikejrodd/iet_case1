@@ -78,7 +78,7 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
     elasticity_at_max_profit = find_elasticity_equals_neg_one_point(z_buyers, max_profit_quantity)
     
     if show_max_profit_area:
-        plt.fill_between([0, max_profit_quantity], mc_price, p_buyers(max_profit_quantity), color='green', alpha=0.3, label='Max Profit Area')
+        plt.fill_between([0, max_profit_quantity], mc_price, price_to_maximize_profit, color='green', alpha=0.3, label='Max Profit Area')
         plt.plot(max_profit_quantity, price_to_maximize_profit, 'gs', label='Max Profit Point')
 
     plt.title('Market Demand and Supply Curves')
@@ -86,7 +86,7 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
     plt.ylabel('Price (USD)')
     plt.legend(loc='upper right')
     return plt, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit
-
+    
 def main():
     st.title('Case 2: Corn Demand and Supply')
 
