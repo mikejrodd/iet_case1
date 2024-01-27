@@ -113,7 +113,7 @@ def main():
     show_seller_data = st.checkbox('Show Seller Data', value=True)
     show_marginal_cost_line = st.checkbox('Show Marginal Cost Line ($200)', value=False)
     show_supply_curve_1 = st.checkbox('Show Supply Curve 1', value=True)
-    show_supply_curve_2 = st.checkbox('Show Supply Curve 2', value=False)
+    # show_supply_curve_2 = st.checkbox('Show Supply Curve 2', value=False)
     show_equilibrium_data = st.checkbox('Show Equilibrium Data', value=False)
     show_max_profit_area = st.checkbox('Show Max Profit Area', value=False)
 
