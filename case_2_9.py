@@ -9,12 +9,14 @@ def calculate_profit_area(z_buyers, mc_price, total_quantity):
 
     max_profit = 0
     max_profit_quantity = 0
-    for q in np.linspace(0, total_quantity, 1000):
+    # Iterate over a range of quantities to find where height equals width
+    for q in np.linspace(0, total_quantity, 10000):
         price = demand_price(q)
         profit = (price - mc_price) * q
-        if profit > max_profit and np.isclose(price - mc_price, q):
-            max_profit = profit
-            max_profit_quantity = q
+        if np.isclose(price - mc_price, q, atol=1e-2):  # Check if height is approximately equal to width
+            if profit > max_profit:
+                max_profit = profit
+                max_profit_quantity = q
 
     return max_profit_quantity, max_profit
 
