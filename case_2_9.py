@@ -86,7 +86,7 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
         plt.fill_between([0, max_profit_quantity], mc_price, price_to_maximize_profit, color='green', alpha=0.3, label='Max Profit Area')
         plt.plot(max_profit_quantity, price_to_maximize_profit, 'gs', label='Max Profit Point')
     
-    plt.title('Market Demand and Supply Curves')
+    #plt.title('Market Demand and Supply Curves')
     plt.xlabel('Quantity')
     plt.ylabel('Price (USD)')
     plt.legend(loc='upper right')
