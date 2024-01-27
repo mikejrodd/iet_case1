@@ -79,19 +79,17 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
         plt.axhline(y=equilibrium_price, color='red', linestyle=':', label='Equilibrium Price')
         plt.plot(equilibrium_quantity, equilibrium_price, 'go', label='Equilibrium Point')
 
-    max_profit_quantity, max_profit = calculate_profit_area(z_buyers, mc_price, total_quantity_supplied)
-    price_to_maximize_profit = p_buyers(max_profit_quantity)
-    elasticity_at_max_profit = find_elasticity_equals_neg_one_point(z_buyers, max_profit_quantity)
-    
+    max_profit_quantity, max_profit, price_to_maximize_profit = calculate_profit_area(z_buyers, mc_price, total_quantity_supplied)
+
     if show_max_profit_area:
         plt.fill_between([0, max_profit_quantity], mc_price, price_to_maximize_profit, color='green', alpha=0.3, label='Max Profit Area')
         plt.plot(max_profit_quantity, price_to_maximize_profit, 'gs', label='Max Profit Point')
-
-    plt.title('Market Demand and Supply Curves')
-    plt.xlabel('Quantity')
-    plt.ylabel('Price (USD)')
-    plt.legend(loc='upper right')
-    return plt, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit
+    
+        plt.title('Market Demand and Supply Curves')
+        plt.xlabel('Quantity')
+        plt.ylabel('Price (USD)')
+        plt.legend(loc='upper right')
+        return plt, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit
     
 def main():
     st.title('Case 2: Corn Demand and Supply')
