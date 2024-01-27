@@ -16,6 +16,7 @@ def calculate_profit_area(z_buyers, mc_price, total_quantity):
         profit_margin = price - mc_price
         profit = profit_margin * q
 
+        # Check if this quantity gives a higher profit
         if profit > max_profit:
             max_profit = profit
             max_profit_quantity = q
@@ -24,11 +25,12 @@ def calculate_profit_area(z_buyers, mc_price, total_quantity):
     return max_profit_quantity, max_profit, price_at_max_profit
 
 def calculate_elasticity(z_buyers, q):
+    # Corrected elasticity calculation
     price = z_buyers[0] * q + z_buyers[1]
     elasticity = (z_buyers[0] * q) / price
     return elasticity
 
-def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, show_supply_curve_1, show_equilibrium_data, show_max_profit_area):
+def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, show_supply_curve_1, show_supply_curve_2, show_equilibrium_data, show_max_profit_area):
     plt.figure(figsize=(18, 9))
 
     total_quantity_supplied = sellers_data['tons_to_sell'].sum()
@@ -53,12 +55,18 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
     if show_marginal_cost_line:
         plt.axhline(y=mc_price, color='grey', linestyle=':', label='Marginal Cost (Price = 200)', xmax=buyer_quantities_new[-1])
 
-    # Define z_sellers outside of the conditional blocks
-    z_sellers = np.polyfit(sellers_sorted['Cumulative_Tons'], sellers_sorted['Cost_to_Sell'], 1)
-
     if show_supply_curve_1:
+        filtered_sellers = sellers_sorted[sellers_sorted['Cumulative_Tons'] <= 1000]
+        z_sellers = np.polyfit(filtered_sellers['Cumulative_Tons'], filtered_sellers['Cost_to_Sell'], 1)
         p_sellers = np.poly1d(z_sellers)
-        plt.plot(sellers_sorted['Cumulative_Tons'], p_sellers(sellers_sorted['Cumulative_Tons']), linestyle='--', color='orange', linewidth=2, label='Supply Curve 1')
+        plt.plot(filtered_sellers['Cumulative_Tons'], p_sellers(filtered_sellers['Cumulative_Tons']), linestyle='--', color='orange', linewidth=2, label='Supply Curve 1')
+
+    if show_supply_curve_2:
+        range_filtered_sellers = sellers_sorted[(sellers_sorted['Cost_to_Sell'] >= 136) & (sellers_sorted['Cost_to_Sell'] <= 401)]
+        if not range_filtered_sellers.empty:
+            z_sellers_2 = np.polyfit(range_filtered_sellers['Cumulative_Tons'], range_filtered_sellers['Cost_to_Sell'], 1)
+            p_sellers_2 = np.poly1d(z_sellers_2)
+            plt.plot(range_filtered_sellers['Cumulative_Tons'], p_sellers_2(range_filtered_sellers['Cumulative_Tons']), linestyle='--', color='purple', linewidth=2, label='Supply Curve 2')
 
     # Calculate the equilibrium quantity and price
     equilibrium_quantity = np.roots(z_buyers - z_sellers)[0]
@@ -105,13 +113,14 @@ def main():
     show_seller_data = st.checkbox('Show Seller Data', value=True)
     show_marginal_cost_line = st.checkbox('Show Marginal Cost Line ($200)', value=False)
     show_supply_curve_1 = st.checkbox('Show Supply Curve 1', value=True)
+    show_supply_curve_2 = st.checkbox('Show Supply Curve 2', value=False)
     show_equilibrium_data = st.checkbox('Show Equilibrium Data', value=False)
     show_max_profit_area = st.checkbox('Show Max Profit Area', value=False)
 
     # Plotting
     fig, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit = plot_data(
         buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, 
-        show_supply_curve_1, show_equilibrium_data, show_max_profit_area)
+        show_supply_curve_1, show_supply_curve_2, show_equilibrium_data, show_max_profit_area)
     st.pyplot(fig)
 
     # Display results
@@ -124,5 +133,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
