@@ -61,12 +61,12 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
         p_sellers = np.poly1d(z_sellers)
         plt.plot(filtered_sellers['Cumulative_Tons'], p_sellers(filtered_sellers['Cumulative_Tons']), linestyle='--', color='orange', linewidth=2, label='Supply Curve 1')
 
-    if show_supply_curve_2:
-        range_filtered_sellers = sellers_sorted[(sellers_sorted['Cost_to_Sell'] >= 136) & (sellers_sorted['Cost_to_Sell'] <= 401)]
-        if not range_filtered_sellers.empty:
-            z_sellers_2 = np.polyfit(range_filtered_sellers['Cumulative_Tons'], range_filtered_sellers['Cost_to_Sell'], 1)
-            p_sellers_2 = np.poly1d(z_sellers_2)
-            plt.plot(range_filtered_sellers['Cumulative_Tons'], p_sellers_2(range_filtered_sellers['Cumulative_Tons']), linestyle='--', color='purple', linewidth=2, label='Supply Curve 2')
+    #if show_supply_curve_2:
+    #    range_filtered_sellers = sellers_sorted[(sellers_sorted['Cost_to_Sell'] >= 136) & (sellers_sorted['Cost_to_Sell'] <= 401)]
+    #    if not range_filtered_sellers.empty:
+    #        z_sellers_2 = np.polyfit(range_filtered_sellers['Cumulative_Tons'], range_filtered_sellers['Cost_to_Sell'], 1)
+    #        p_sellers_2 = np.poly1d(z_sellers_2)
+    #        plt.plot(range_filtered_sellers['Cumulative_Tons'], p_sellers_2(range_filtered_sellers['Cumulative_Tons']), linestyle='--', color='purple', linewidth=2, label='Supply Curve 2')
 
     # Calculate the equilibrium quantity and price
     equilibrium_quantity = np.roots(z_buyers - z_sellers)[0]
