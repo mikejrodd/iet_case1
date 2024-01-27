@@ -28,19 +28,19 @@ def find_elasticity_equals_neg_one_point(z_buyers, q):
     return elasticity(q)
 
 def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, show_supply_curve_1, show_supply_curve_2, show_equilibrium_data, show_max_profit_area):
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(18, 9))
 
     total_quantity_supplied = sellers_data['tons_to_sell'].sum()
     buyers_sorted = buyers_data.sort_values(by='Willingness_to_Pay', ascending=False).reset_index(drop=True)
 
-    buyer_quantities = np.arange(len(buyers_sorted))
-    z_buyers = np.polyfit(buyer_quantities, buyers_sorted['Willingness_to_Pay'], 1)
+    buyer_quantities_new = np.arange(1, len(buyers_sorted) + 1)
+    z_buyers = np.polyfit(buyer_quantities_new, buyers_sorted['Willingness_to_Pay'], 1)
     p_buyers = np.poly1d(z_buyers)
 
     if show_buyer_data:
-        plt.plot(buyer_quantities, buyers_sorted['Willingness_to_Pay'], marker='o', linestyle='-', color='grey', label='Willingness to Buy')
+        plt.plot(buyer_quantities_new, buyers_sorted['Willingness_to_Pay'], marker='o', linestyle='-', color='grey', label='Willingness to Buy')
     
-    plt.plot(buyer_quantities, p_buyers(buyer_quantities), linestyle='--', color='blue', linewidth=2, label='Demand Best Fit Line')
+    plt.plot(buyer_quantities_new, p_buyers(buyer_quantities_new), linestyle='--', color='blue', linewidth=2, label='Demand Best Fit Line')
 
     sellers_sorted = sellers_data.sort_values(by='Cost_to_Sell', ascending=True)
     sellers_sorted['Cumulative_Tons'] = sellers_sorted['tons_to_sell'].cumsum()
@@ -50,7 +50,7 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
 
     mc_price = 200
     if show_marginal_cost_line:
-        plt.axhline(y=mc_price, color='grey', linestyle=':', label='Marginal Cost (Price = 200)', xmax=buyer_quantities[-1])
+        plt.axhline(y=mc_price, color='grey', linestyle=':', label='Marginal Cost (Price = 200)', xmax=buyer_quantities_new[-1])
 
     if show_supply_curve_1:
         filtered_sellers = sellers_sorted[sellers_sorted['Cumulative_Tons'] <= 1000]
@@ -122,3 +122,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
