@@ -5,7 +5,7 @@ import streamlit as st
 
 def calculate_profit_area(z_buyers, mc_price, total_quantity):
     def demand_price(x):
-        return z_buyers[1] + z_buyers[0] * x
+        return z_buyers[0] * x + z_buyers[1]
 
     max_profit = 0
     max_profit_quantity = 0
@@ -20,7 +20,7 @@ def calculate_profit_area(z_buyers, mc_price, total_quantity):
 
 def find_elasticity_equals_neg_one_point(z_buyers, q):
     def demand_price(x):
-        return z_buyers[1] + z_buyers[0] * x
+        return z_buyers[0] * x + z_buyers[1]
 
     def elasticity(x):
         return z_buyers[0] * x / demand_price(x)
@@ -35,11 +35,13 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
     buyer_quantities = np.linspace(0, total_quantity_supplied, num_buyers)
     buyers_sorted = buyers_data.sort_values(by='Willingness_to_Pay', ascending=False).reset_index(drop=True)
 
+    z_buyers = np.polyfit(buyer_quantities, buyers_sorted['Willingness_to_Pay'], 1)
+    z_buyers[1] = 700 - z_buyers[0] * total_quantity_supplied  # Adjusting intercept
+    p_buyers = np.poly1d(z_buyers)
+
     if show_buyer_data:
         plt.plot(buyer_quantities, buyers_sorted['Willingness_to_Pay'], marker='o', linestyle='-', color='grey', label='Willingness to Buy')
-
-    z_buyers = np.polyfit(buyer_quantities, buyers_sorted['Willingness_to_Pay'], 1)
-    p_buyers = np.poly1d(z_buyers)
+    
     plt.plot(buyer_quantities, p_buyers(buyer_quantities), linestyle='--', color='blue', linewidth=2, label='Demand Best Fit Line')
 
     sellers_sorted = sellers_data.sort_values(by='Cost_to_Sell', ascending=True)
@@ -90,9 +92,6 @@ def main():
     st.title('Case 2: Corn Demand and Supply')
 
     default_file_path = 'https://raw.githubusercontent.com/mikejrodd/iet_case1/main/case_2.xlsx'
-    #file_path = st.text_input('Enter the path of your Excel file:', default_file_path)
-
-    #if file_path:
     data_sheet = pd.read_excel(default_file_path, sheet_name='data')
     buyers_data = data_sheet[['BUYERS', 'Unnamed: 1']].iloc[1:]
     buyers_data.columns = ['Buyer', 'Willingness_to_Pay']
