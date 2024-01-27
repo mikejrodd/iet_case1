@@ -12,7 +12,7 @@ def calculate_profit_area(z_buyers, mc_price, total_quantity):
     for q in np.linspace(0, total_quantity, 1000):
         price = demand_price(q)
         profit = (price - mc_price) * q
-        if profit > max_profit:
+        if profit > max_profit and np.isclose(price - mc_price, q):
             max_profit = profit
             max_profit_quantity = q
 
@@ -22,10 +22,11 @@ def find_elasticity_equals_neg_one_point(z_buyers, q):
     def demand_price(x):
         return z_buyers[0] * x + z_buyers[1]
 
-    def elasticity(x):
-        return z_buyers[0] * x / demand_price(x)
-
-    return elasticity(q)
+    price = demand_price(q)
+    marginal_revenue = z_buyers[0] * 2 * q + z_buyers[1]
+    elasticity = (price / marginal_revenue - 1) / (price / q)
+    
+    return elasticity
 
 def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, show_supply_curve_1, show_supply_curve_2, show_equilibrium_data, show_max_profit_area):
     plt.figure(figsize=(18, 9))
