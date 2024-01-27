@@ -120,7 +120,7 @@ def main():
     # Plotting
     fig, equilibrium_quantity, equilibrium_price, max_profit, elasticity_at_max_profit, price_to_maximize_profit = plot_data(
         buyers_data, sellers_data, show_buyer_data, show_seller_data, show_marginal_cost_line, 
-        show_supply_curve_1, show_supply_curve_2, show_equilibrium_data, show_max_profit_area)
+        show_supply_curve_1, show_equilibrium_data, show_max_profit_area)
     st.pyplot(fig)
 
     # Display results
