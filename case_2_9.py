@@ -31,12 +31,10 @@ def plot_data(buyers_data, sellers_data, show_buyer_data, show_seller_data, show
     plt.figure(figsize=(12, 6))
 
     total_quantity_supplied = sellers_data['tons_to_sell'].sum()
-    num_buyers = len(buyers_data)
-    buyer_quantities = np.linspace(0, total_quantity_supplied, num_buyers)
     buyers_sorted = buyers_data.sort_values(by='Willingness_to_Pay', ascending=False).reset_index(drop=True)
 
+    buyer_quantities = np.arange(len(buyers_sorted))
     z_buyers = np.polyfit(buyer_quantities, buyers_sorted['Willingness_to_Pay'], 1)
-    z_buyers[1] = 700 - z_buyers[0] * total_quantity_supplied  # Adjusting intercept
     p_buyers = np.poly1d(z_buyers)
 
     if show_buyer_data:
@@ -124,4 +122,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
